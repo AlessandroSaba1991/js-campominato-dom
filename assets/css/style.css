@@ -106,6 +106,10 @@ select {
     text-align: center;
 }
 
+.cells>button {
+    background-color: transparent;
+}
+
 
 /* #endregion Main */
 

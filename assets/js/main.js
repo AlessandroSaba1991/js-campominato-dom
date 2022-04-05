@@ -60,20 +60,47 @@ function generate_grid_with_number(node_selector, number_of_cells, dimension_gri
  * @param {String} element Inserire elemento da selezionare
  * @param {String} colour Inserire il colore che si vuole aggiungere dopo il click
  */
-function active_cell(class_name) {
+function active_cell(class_name, num_cell) {
     const cell_list = document.querySelectorAll(class_name);
+    const bomb_list = numeri_casuali_unici(16, num_cell)
+    const click_possibili = cell_list.length - bomb_list.length
+
+    let click_effettuati = 0;
+
 
     for (let i = 0; i < cell_list.length; i++) {
         const cell = cell_list[i];
+
         cell.addEventListener("click", function() {
 
-            if (numeri_casuali_unici(16, 100).includes(parseInt(this.innerHTML))) {
+
+
+            if (bomb_list.includes(parseInt(this.innerHTML))) {
+
                 this.style.backgroundColor = 'red'
+
+                document.querySelector('.cells').innerHTML = 'Hai preso la bomba'
+                return alert(`hai effettuato ${click_effettuati} click prima di prendere una bomba`)
+
             } else {
                 this.style.backgroundColor = 'violet'
+                click_effettuati++
+                console.log(click_effettuati);
+
             }
+            if (click_effettuati == click_possibili) {
+                console.log('you win');
+                document.querySelector('.cells').innerHTML = 'Hai vinto'
+                return alert(`hai vinto e hai effettuato ${click_effettuati} click e non hai preso nessuna bomba`)
+
+            }
+
+            console.log(click_effettuati, click_possibili);
         });
+
+
     }
+
 }
 
 function getRndInteger(min, max) {
@@ -93,24 +120,32 @@ function numeri_casuali_unici(number_bomb, number_max) {
     return number_list
 }
 
-console.log(numeri_casuali_unici(16, 100));
+
 
 const element_form = document.querySelector("form");
+
 element_form.addEventListener("submit", function(event) {
     event.preventDefault();
+
+    let cell, colums;
     const difficolta = document.getElementById("difficolta").value;
-    switch (true) {
-        case difficolta === "facile":
-            generate_grid_with_number(".cells", 100, "x10", "div", "square");
-            active_cell(".square", "violet");
+
+    switch (difficolta) {
+        case 'facile':
+            cell = 100
+            colums = 'x10'
             break;
-        case difficolta === "medio":
-            generate_grid_with_number(".cells", 81, "x9", "div", "square");
-            active_cell(".square", "violet");
+        case "medio":
+            cell = 81
+            colums = 'x9'
             break;
-        case difficolta === "difficile":
-            generate_grid_with_number(".cells", 49, "x7", "div", "square");
-            active_cell(".square", "violet");
+        case "difficile":
+            cell = 49
+            colums = 'x7'
             break;
     }
+
+    generate_grid_with_number(".cells", cell, colums, "div", "square");
+    active_cell(".square", cell);
+
 });
