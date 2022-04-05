@@ -79,15 +79,25 @@ function active_cell(class_name, num_cell) {
 
             if (bomb_list.includes(parseInt(this.innerHTML))) {
 
-                this.style.cssText += 'color:white;background-color:red';
+                this.style.cssText = 'color:white;background-color:red';
 
                 div_element.innerHTML = `hai effettuato ${click_effettuati} click prima di prendere una bomba. <br> HAI PERSO`
                 document.querySelector('.cells').append(div_element)
 
+                for (let c = 0; c < cell_list.length; c++) {
+                    const cell = cell_list[c];
+
+                    if (bomb_list.includes(parseInt(cell.innerHTML))) {
+                        cell.style.cssText = 'color:white;background-color:red';
+
+                    }
+                    cell.setAttribute('disabled', 'disabled')
+                }
+
                 return
 
             } else {
-                this.style.cssText += 'color:white;background-color:violet';
+                this.style.cssText = 'color:white;background-color:violet';
                 click_effettuati++
 
 
@@ -149,7 +159,7 @@ element_form.addEventListener("submit", function(event) {
             break;
     }
 
-    generate_grid_with_number(".cells", cell, colums, "div", "square");
+    generate_grid_with_number(".cells", cell, colums, "button", "square");
     active_cell(".square", cell);
 
 });
