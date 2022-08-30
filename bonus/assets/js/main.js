@@ -103,13 +103,12 @@ function active_cell(class_name, num_cell) {
 
             }
             if (click_effettuati == click_possibili) {
-                console.log('you win');
                 div_element.innerHTML = `hai effettuato ${click_effettuati} click e non hai preso nessuna bomba. <br> HAI VINTO`
                 document.querySelector('.cells').append(div_element)
 
             }
 
-            console.log(click_effettuati, click_possibili);
+            
         });
 
 
@@ -131,6 +130,7 @@ function numeri_casuali_unici(number_bomb, number_max) {
         }
         number_list.push(random_number);
     }
+    //console.log(number_list.sort((a,b)=> a - b))
     return number_list
 }
 
